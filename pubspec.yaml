@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  get: ^4.1.4
+  dots_indicator: ^4.0.1
 
 dev_dependencies:
   flutter_test:
@@ -28,3 +30,5 @@ flutter:
           weight: 700
         - asset: assets/font/Roboto-Black.ttf
           weight: 900
+  assets:
+    - assets/images/
