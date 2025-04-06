@@ -67,7 +67,7 @@ class _ExpandableTextWidgetState extends State<ExpandableTextWidget> {
                           hiddenText
                               ? Icons.arrow_drop_down
                               : Icons.arrow_drop_up,
-                          color: Colors.blue,
+                          color: AppColors.mainColor,
                         ),
                       ],
                     ),

@@ -33,10 +33,21 @@ class _MainFoodPage extends State<MainFoodPage> {
                 children: [
                   Column(
                     children: [
-                      BigText(text: "VietNam", color: AppColors.mainColor),
+                      Text(
+                        "Feliciano",
+                        style: TextStyle(
+                          fontSize: Dimensions.font26,
+                          fontFamily: "GreatVibes",
+                          color: AppColors.mainColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       Row(
                         children: [
-                          SmallText(text: "HaNoi", color: AppColors.textColor),
+                          SmallText(
+                            text: "Hồ Chí Minh",
+                            color: AppColors.textColor,
+                          ),
                           Icon(
                             Icons.arrow_drop_down_rounded,
                             color: AppColors.textColor,
