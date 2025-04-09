@@ -4,6 +4,7 @@ import 'package:food_ordering/pages/home/food_page_body.dart';
 import 'package:food_ordering/Utility/color.dart';
 import 'package:food_ordering/widgets/big_text.dart';
 import 'package:food_ordering/widgets/small_text.dart';
+import 'package:food_ordering/widgets/theme_toggle_button.dart';
 
 class MainFoodPage extends StatefulWidget {
   const MainFoodPage({super.key});
@@ -42,6 +43,7 @@ class _MainFoodPage extends State<MainFoodPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+
                       Row(
                         children: [
                           SmallText(
@@ -55,6 +57,15 @@ class _MainFoodPage extends State<MainFoodPage> {
                         ],
                       ),
                     ],
+                  ),
+                  Container(
+                    // Container để căn chỉnh nếu cần
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.symmetric(
+                      vertical: Dimensions.height10,
+                      horizontal: Dimensions.width20,
+                    ),
+                    child: ThemeToggleButton(),
                   ),
                   Center(
                     child: Container(

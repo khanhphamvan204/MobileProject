@@ -1,26 +1,119 @@
-import 'package:flutter/material.dart';
-import 'package:food_ordering/pages/food/popular_food_detail.dart';
-import 'package:food_ordering/pages/food/recommended_food_detail.dart';
-import 'package:get/get.dart';
-import 'package:food_ordering/pages/home/main_food_page.dart';
+// import 'package:flutter/material.dart';
+// import 'package:food_ordering/pages/food/popular_food_detail.dart';
+// import 'package:food_ordering/pages/food/recommended_food_detail.dart';
+// import 'package:get/get.dart';
+// import 'package:food_ordering/pages/home/main_food_page.dart';
 
-void main() {
-  runApp(const MainApp());
+// void main() {
+//   runApp(const MainApp());
+// }
+
+// class MainApp extends StatelessWidget {
+//   const MainApp({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return GetMaterialApp(
+//       title: "Food App",
+//       debugShowCheckedModeBanner: false,
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//         scaffoldBackgroundColor: Colors.white,
+//       ),
+//       home: MainFoodPage(),
+//     );
+//   }
+// }
+// main.dart
+import 'package:flutter/material.dart';
+import 'package:food_ordering/pages/home/main_food_page.dart'; // Trang chính của bạn
+import 'package:food_ordering/routes/route_helper.dart';
+import 'package:get/get.dart';
+import 'package:food_ordering/controllers/theme_controller.dart'; // Import controller
+
+void main() async {
+  // Đảm bảo Flutter binding đã sẵn sàng trước khi chạy bất cứ thứ gì async
+  WidgetsFlutterBinding.ensureInitialized();
+  // Khởi tạo ThemeController sử dụng Get.put()
+  // await Get.putAsync(() async => ThemeController()); // Nếu cần khởi tạo bất đồng bộ
+  Get.put(ThemeController()); // Khởi tạo đồng bộ
+  runApp(MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  // Lấy instance của ThemeController
+  final ThemeController themeController = Get.find();
+
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // GetMaterialApp sẽ tự động lắng nghe thay đổi theme từ Get.changeThemeMode
     return GetMaterialApp(
-      title: "Food App",
+      title: 'Food Ordering App',
       debugShowCheckedModeBanner: false,
+
+      // --- Định nghĩa ThemeData cho Light Mode ---
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
+        brightness: Brightness.light,
+        primaryColor: Color(0xFFC8A97E), // Màu gốc mainColor
+        scaffoldBackgroundColor: Colors.grey[100],
+        fontFamily: "Roboto", // Chọn font chữ nếu có
+        colorScheme: ColorScheme.light(
+          primary: Color(0xFFC8A97E), // mainColor
+          secondary: Color(0xFFfcab88), // iconColor2
+          background: Colors.grey[100]!,
+          surface: Colors.white, // Màu nền cho Card, Dialog,...
+          onPrimary: Colors.white, // Màu chữ/icon trên nền primary
+          onSecondary: Colors.black, // Màu chữ/icon trên nền secondary
+          onBackground: Color(0xFF332d2b), // Màu chữ/icon trên nền background
+          onSurface: Color(0xFF332d2b), // Màu chữ/icon trên nền surface
+          brightness: Brightness.light,
+          error: Colors.red,
+          onError: Colors.white,
+        ),
+        // Định nghĩa thêm các thuộc tính khác như textTheme, appBarTheme... nếu cần
+        textTheme: TextTheme(
+          bodyLarge: TextStyle(color: Color(0xFF5c524f)), // titleColor gốc
+          bodyMedium: TextStyle(color: Color(0xFF8f837f)), // paraColor gốc
+          // Thêm các style khác nếu cần
+        ),
       ),
-      home: RecommendedFoodDetail(),
+
+      // --- Định nghĩa ThemeData cho Dark Mode ---
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Color(0xFFD4B996), // Màu mainColor cho dark mode
+        scaffoldBackgroundColor: Color(0xFF121212), // Màu nền tối chuẩn
+        fontFamily: "Roboto", // Chọn font chữ nếu có
+        colorScheme: ColorScheme.dark(
+          primary: Color(0xFFD4B996), // mainColor dark
+          secondary: Color(0xFFFFBDA1), // iconColor2 dark
+          background: Color(0xFF121212),
+          surface: Color(0xFF1e1e1e), // Màu nền tối hơn cho Card, Dialog,...
+          onPrimary: Colors.black,
+          onSecondary: Colors.black,
+          onBackground: Colors.white70,
+          onSurface: Colors.white, // Chữ/icon trên nền tối
+          brightness: Brightness.dark,
+          error: Colors.redAccent,
+          onError: Colors.black,
+        ),
+        // Định nghĩa thêm các thuộc tính khác
+        textTheme: TextTheme(
+          bodyLarge: TextStyle(color: Colors.white), // Chữ chính màu trắng
+          bodyMedium: TextStyle(color: Colors.white60), // Chữ phụ màu trắng mờ
+          // Thêm các style khác nếu cần
+        ),
+      ),
+
+      // Lấy theme mode từ controller
+      themeMode: themeController.themeMode,
+
+      // Trang bắt đầu của ứng dụng
+      home: MainFoodPage(),
+      initialRoute: RouteHelper.initial,
+      getPages: RouteHelper.routes, // Hoặc trang nào chứa FoodPageBody của bạn
     );
   }
 }

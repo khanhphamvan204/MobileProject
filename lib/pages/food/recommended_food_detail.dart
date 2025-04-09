@@ -11,15 +11,21 @@ class RecommendedFoodDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.whiteColor,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            automaticallyImplyLeading: false,
             toolbarHeight: 70,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AppIcon(icon: Icons.arrow_back_ios),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: AppIcon(icon: Icons.arrow_back_ios),
+                ),
                 AppIcon(icon: Icons.shopping_cart_outlined),
               ],
             ),
@@ -29,7 +35,7 @@ class RecommendedFoodDetail extends StatelessWidget {
                 width: double.infinity,
                 padding: EdgeInsets.only(top: 5, bottom: 10),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColors.whiteColor,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(Dimensions.radius20),
                     topRight: Radius.circular(Dimensions.radius20),
@@ -88,7 +94,7 @@ class RecommendedFoodDetail extends StatelessWidget {
               children: [
                 AppIcon(
                   iconSize: Dimensions.iconSize24,
-                  iconColor: Colors.white,
+                  iconColor: AppColors.whiteColor,
                   backgroundColor: AppColors.mainColor,
                   icon: Icons.remove,
                 ),
@@ -102,7 +108,7 @@ class RecommendedFoodDetail extends StatelessWidget {
                 ),
                 AppIcon(
                   iconSize: Dimensions.iconSize24,
-                  iconColor: Colors.white,
+                  iconColor: AppColors.whiteColor,
                   backgroundColor: AppColors.mainColor,
                   icon: Icons.add,
                 ),
@@ -136,7 +142,7 @@ class RecommendedFoodDetail extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(Dimensions.radius10),
-                    color: Colors.white,
+                    color: AppColors.whiteColor,
                   ),
                   child: Icon(
                     Icons.favorite,
@@ -157,7 +163,7 @@ class RecommendedFoodDetail extends StatelessWidget {
                   ),
                   child: BigText(
                     text: "\$10.0 | Add to cart",
-                    color: Colors.white,
+                    color: AppColors.whiteColor,
                   ),
                 ),
               ],
