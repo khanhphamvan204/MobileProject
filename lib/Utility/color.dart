@@ -23,15 +23,17 @@ class AppColors {
 
   // --- Các màu sẽ thay đổi theo theme ---
   static Color get textColor =>
-      _themeController.isDarkMode ? Colors.white70 : Color(0xFFccc7c5);
+      _themeController.isDarkMode
+          ? Colors.white70
+          : Color.fromARGB(255, 154, 152, 151);
   static Color get whiteColor =>
       _themeController.isDarkMode ? Colors.black : Colors.white;
   static Color get blackColor =>
       _themeController.isDarkMode ? Colors.white : Colors.black;
   static Color get mainColor =>
       _themeController.isDarkMode
-          ? Color(0xFFD4B996)
-          : Color(0xFFC8A97E); // Có thể điều chỉnh màu dark mode
+          ? Color(0xFFDA291C)
+          : Color(0xFFDA291C); // Có thể điều chỉnh màu dark mode
   static Color get iconColor1 =>
       _themeController.isDarkMode ? Color(0xFFFFE0A6) : Color(0xFFffd28d);
   static Color get iconColor2 =>

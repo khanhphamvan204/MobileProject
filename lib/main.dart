@@ -26,14 +26,19 @@
 // }
 // main.dart
 import 'package:flutter/material.dart';
+import 'package:food_ordering/controllers/popular_product_controller.dart';
+import 'package:food_ordering/controllers/product_controller.dart';
+import 'package:food_ordering/pages/home/food_page_body.dart';
 import 'package:food_ordering/pages/home/main_food_page.dart'; // Trang chính của bạn
 import 'package:food_ordering/routes/route_helper.dart';
 import 'package:get/get.dart';
 import 'package:food_ordering/controllers/theme_controller.dart'; // Import controller
+import 'package:food_ordering/helper/dependencies.dart' as dep;
 
 void main() async {
   // Đảm bảo Flutter binding đã sẵn sàng trước khi chạy bất cứ thứ gì async
   WidgetsFlutterBinding.ensureInitialized();
+  await dep.init();
   // Khởi tạo ThemeController sử dụng Get.put()
   // await Get.putAsync(() async => ThemeController()); // Nếu cần khởi tạo bất đồng bộ
   Get.put(ThemeController()); // Khởi tạo đồng bộ
@@ -48,6 +53,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.find<PopularProductController>().getPopularProductList();
+    Get.find<ProductController>().getProductList();
     // GetMaterialApp sẽ tự động lắng nghe thay đổi theme từ Get.changeThemeMode
     return GetMaterialApp(
       title: 'Food Ordering App',

@@ -5,6 +5,8 @@ import 'package:food_ordering/Utility/color.dart';
 import 'package:food_ordering/widgets/big_text.dart';
 import 'package:food_ordering/widgets/small_text.dart';
 import 'package:food_ordering/widgets/theme_toggle_button.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:food_ordering/Utility/app_constants.dart';
 
 class MainFoodPage extends StatefulWidget {
   const MainFoodPage({super.key});
@@ -14,6 +16,17 @@ class MainFoodPage extends StatefulWidget {
 }
 
 class _MainFoodPage extends State<MainFoodPage> {
+  final CarouselSliderController _carouselController =
+      CarouselSliderController();
+  int _currentIndex = 0;
+
+  final List<String> imageUrls = [
+    'assets/images/banner1.webp',
+    'assets/images/banner2.webp',
+    'assets/images/banner3.webp',
+    'assets/images/banner4.webp',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,16 +47,11 @@ class _MainFoodPage extends State<MainFoodPage> {
                 children: [
                   Column(
                     children: [
-                      Text(
-                        "Feliciano",
-                        style: TextStyle(
-                          fontSize: Dimensions.font26,
-                          fontFamily: "GreatVibes",
-                          color: AppColors.mainColor,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Image.asset(
+                        "assets/images/logo.png",
+                        width: Dimensions.height20 * 3,
+                        height: Dimensions.height20 * 3,
                       ),
-
                       Row(
                         children: [
                           SmallText(
@@ -59,7 +67,6 @@ class _MainFoodPage extends State<MainFoodPage> {
                     ],
                   ),
                   Container(
-                    // Container để căn chỉnh nếu cần
                     alignment: Alignment.centerRight,
                     padding: EdgeInsets.symmetric(
                       vertical: Dimensions.height10,
@@ -73,7 +80,7 @@ class _MainFoodPage extends State<MainFoodPage> {
                       height: Dimensions.height45,
                       child: Icon(
                         Icons.search,
-                        color: Colors.white,
+                        color: AppColors.whiteColor,
                         size: Dimensions.iconSize24,
                       ),
                       decoration: BoxDecoration(
@@ -88,7 +95,148 @@ class _MainFoodPage extends State<MainFoodPage> {
               ),
             ),
           ),
-          Expanded(child: SingleChildScrollView(child: FoodPageBody())),
+          // Đặt carousel và dots bên trong SingleChildScrollView
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Carousel
+                  Stack(
+                    children: [
+                      CarouselSlider(
+                        carouselController: _carouselController,
+                        options: CarouselOptions(
+                          height: 200.0,
+                          autoPlay: true,
+                          autoPlayInterval: Duration(seconds: 3),
+                          enlargeCenterPage: true,
+                          viewportFraction: 0.9,
+                          aspectRatio: 2.0,
+                          enableInfiniteScroll: true,
+                          onPageChanged: (index, reason) {
+                            setState(() {
+                              _currentIndex = index;
+                            });
+                          },
+                        ),
+                        items:
+                            imageUrls.map((imageUrl) {
+                              return Builder(
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    margin: EdgeInsets.symmetric(
+                                      horizontal: 5.0,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: AppColors.mainColor,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(
+                                        Dimensions.radius15,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.3),
+                                          blurRadius: 5,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                        Dimensions.radius15,
+                                      ),
+                                      child: Image.asset(
+                                        imageUrl,
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        height: 200,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                Container(
+                                                  color: Colors.grey[200],
+                                                  child: Center(
+                                                    child: Icon(
+                                                      Icons.error,
+                                                      color:
+                                                          AppColors.mainColor,
+                                                      size: 50,
+                                                    ),
+                                                  ),
+                                                ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            }).toList(),
+                      ),
+                      // Nút điều hướng trái
+                      Positioned(
+                        left: 10,
+                        top: 80,
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.arrow_left,
+                            color: AppColors.mainColor,
+                            size: 40,
+                          ),
+                          onPressed: () {
+                            _carouselController.previousPage();
+                          },
+                        ),
+                      ),
+                      // Nút điều hướng phải
+                      Positioned(
+                        right: 10,
+                        top: 80,
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.arrow_right,
+                            color: AppColors.mainColor,
+                            size: 40,
+                          ),
+                          onPressed: () {
+                            _carouselController.nextPage();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: Dimensions.height10),
+                  // Dots chỉ thị
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children:
+                        imageUrls.asMap().entries.map((entry) {
+                          int index = entry.key;
+                          return Container(
+                            width: _currentIndex == index ? 12.0 : 8.0,
+                            height: 8.0,
+                            margin: EdgeInsets.symmetric(horizontal: 4.0),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color:
+                                  _currentIndex == index
+                                      ? AppColors.mainColor
+                                      : Colors.grey,
+                            ),
+                          );
+                        }).toList(),
+                  ),
+                  SizedBox(height: Dimensions.height20),
+                  BigText(
+                    text: "BẠN SẼ THÍCH",
+                    size: Dimensions.font26,
+                    color: AppColors.blackColor,
+                  ),
+                  SizedBox(height: Dimensions.height20),
+                  FoodPageBody(),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

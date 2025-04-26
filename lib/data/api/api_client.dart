@@ -1,19 +1,14 @@
-import 'package:food_ordering/Utility/app_constants.dart';
 import 'package:get/get.dart';
 
 class ApiClient extends GetConnect implements GetxService {
-  late String token;
-  final String appBaseUrl;
-  late Map<String, String> _mainHeader;
-  ApiClient({required this.appBaseUrl}) {
-    baseUrl = appBaseUrl;
-    timeout = Duration(seconds: 30);
-    token = AppConstants.TOKEN;
-    _mainHeader = {
-      'Content-type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $token',
-    };
+  final String baseUrl;
+
+  ApiClient({required this.baseUrl}) {
+    // Cấu hình baseUrl và timeout
+    httpClient.baseUrl = baseUrl;
+    httpClient.timeout = Duration(seconds: 30);
   }
+
   Future<Response> getData(String uri) async {
     try {
       Response response = await get(uri);
