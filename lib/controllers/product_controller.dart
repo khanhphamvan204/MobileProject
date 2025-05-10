@@ -144,31 +144,71 @@ class ProductController extends GetxController {
   var productList = <Product>[].obs;
   var isLoaded = false.obs;
 
+  // Future<void> getProductList({int? categoryId}) async {
+  //   try {
+  //     isLoaded.value = false;
+  //     final response = await productRepo.getProductList(categoryId: categoryId);
+  //     if (response.statusCode == 200) {
+  //       dynamic responseBody = response.body;
+  //       List<dynamic> productData = [];
+
+  //       if (responseBody is Map<String, dynamic> &&
+  //           responseBody.containsKey('data')) {
+  //         productData = responseBody['data'];
+  //       } else if (responseBody is List) {
+  //         productData = responseBody;
+  //       }
+
+  //       productList.value =
+  //           productData.map((json) => Product.fromJson(json)).toList();
+  //       isLoaded.value = true;
+  //     } else {
+  //       Get.snackbar('Lỗi', 'Không thể  tải sản phẩm: ${response.statusText}');
+  //     }
+  //   } catch (e) {
+  //     Get.snackbar('Lỗi', 'Có lỗi xảy ra: $e');
+  //   } finally {
+  //     isLoaded.value = true;
+  //   }
+  // }
   Future<void> getProductList({int? categoryId}) async {
     try {
-      isLoaded.value = false;
+      // isLoaded.value = false;
+      print("Bắt đầu gọi API getProductList, categoryId: $categoryId");
       final response = await productRepo.getProductList(categoryId: categoryId);
+      print("API Status: ${response.statusCode}, Body: ${response.body}");
+
       if (response.statusCode == 200) {
         dynamic responseBody = response.body;
         List<dynamic> productData = [];
+        print("Response Body Type: ${responseBody.runtimeType}");
 
         if (responseBody is Map<String, dynamic> &&
             responseBody.containsKey('data')) {
           productData = responseBody['data'];
+          print("Dữ liệu từ key 'data': $productData");
         } else if (responseBody is List) {
           productData = responseBody;
+          print("Dữ liệu là List: $productData");
+        } else {
+          print("Định dạng dữ liệu không mong đợi: $responseBody");
         }
 
         productList.value =
             productData.map((json) => Product.fromJson(json)).toList();
+        print("Số sản phẩm đã parse: ${productList.length}");
         isLoaded.value = true;
       } else {
+        print("API thất bại: ${response.statusCode} - ${response.statusText}");
         Get.snackbar('Lỗi', 'Không thể tải sản phẩm: ${response.statusText}');
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print("Lỗi trong getProductList: $e");
+      print("StackTrace: $stackTrace");
       Get.snackbar('Lỗi', 'Có lỗi xảy ra: $e');
     } finally {
       isLoaded.value = true;
+      print("Hoàn tất getProductList, isLoaded: ${isLoaded.value}");
     }
   }
 

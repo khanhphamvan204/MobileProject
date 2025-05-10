@@ -1270,6 +1270,7 @@ import 'package:food_ordering/widgets/app_column.dart';
 import 'package:food_ordering/widgets/big_text.dart';
 import 'package:food_ordering/widgets/small_text.dart';
 import 'package:get/get.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class FoodPageBody extends StatefulWidget {
   const FoodPageBody({super.key});
@@ -1300,6 +1301,19 @@ class _FoodPageBodyState extends State<FoodPageBody> {
         });
       }
     });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   // Kiểm tra xem widget còn tồn tại không trước khi gọi controller
+    //   if (mounted) {
+    //     print("FoodPageBody: Fetching data after first frame.");
+    //     // Gọi các hàm fetch dữ liệu ở đây
+    //     // Giả sử bạn có các controller đã được Get.find() hoặc inject
+    //     Get.find<ProductController>().getProductList();
+    //     Get.find<CategoryController>().getCategoryList();
+    //     // Nếu bạn cũng cần fetch popular products ở đây, hãy gọi nó
+    //     Get.find<PopularProductController>()
+    //         .getPopularProductList(); // Đảm bảo phương thức này tồn tại và được gọi đúng lúc
+    //   }
+    // });
     // Fetch products and categories when the page initializes
     productController.getProductList(); // Fetch all products initially
     categoryController.getCategoryList();
@@ -1465,7 +1479,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
             // Product List
             Obx(
               () =>
-                  productController.isLoaded == true
+                  productController.isLoaded.value
                       ? productController.productList.isEmpty
                           ? const Center(child: Text("Không có sản phẩm nào"))
                           : ListView.builder(
@@ -1499,14 +1513,19 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                                             Dimensions.radius20,
                                           ),
                                           color: Colors.white38,
-                                          image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: NetworkImage(
+                                        ),
+                                        child: CachedNetworkImage(
+                                          imageUrl:
                                               AppConstants.BASE_URL +
-                                                  "/" +
-                                                  product.img,
-                                            ),
-                                          ),
+                                              "/" +
+                                              product.img,
+                                          placeholder:
+                                              (context, url) =>
+                                                  CircularProgressIndicator(),
+                                          errorWidget:
+                                              (context, url, error) =>
+                                                  Icon(Icons.error),
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
                                       Expanded(
