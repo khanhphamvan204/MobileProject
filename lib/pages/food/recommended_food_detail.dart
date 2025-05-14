@@ -430,17 +430,17 @@
 //     );
 //   }
 // }
+// import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:food_ordering/Utility/app_constants.dart';
 import 'package:food_ordering/Utility/color.dart';
-import 'package:food_ordering/Utility/currency_formatter.dart';
 import 'package:food_ordering/Utility/dimensions.dart';
 import 'package:food_ordering/controllers/cart_controller.dart';
 import 'package:food_ordering/controllers/product_controller.dart';
 import 'package:food_ordering/models/products_model.dart';
 import 'package:food_ordering/pages/cart/cart_page.dart';
-import 'package:food_ordering/pages/home/main_food_page.dart';
+import 'package:food_ordering/routes/route_helper.dart';
 import 'package:food_ordering/widgets/app_column.dart';
 import 'package:food_ordering/widgets/app_icon.dart';
 import 'package:food_ordering/widgets/big_text.dart';
@@ -466,6 +466,7 @@ class _RecommendedFoodDetailState extends State<RecommendedFoodDetail> {
   final CartController cartController = Get.find<CartController>();
   Product? _product;
   bool _isLoading = false;
+  int _quantity = 0;
   int _inCartItems = 0;
 
   @override
@@ -503,35 +504,63 @@ class _RecommendedFoodDetailState extends State<RecommendedFoodDetail> {
   }
 
   void _initProduct() {
-    _inCartItems = cartController.getQuantity(_product!);
+    _quantity = 0;
+    _inCartItems = 0;
+    bool exist = cartController.existInCart(_product!);
+    if (exist) {
+      _inCartItems = cartController.getQuantity(_product!);
+    }
   }
 
   void _setQuantity(bool isIncrement) {
     setState(() {
       if (isIncrement) {
-        _inCartItems++;
+        _quantity = _checkQuantity(_quantity + 1);
       } else {
-        _inCartItems = _inCartItems > 0 ? _inCartItems - 1 : 0;
+        _quantity = _checkQuantity(_quantity - 1);
       }
     });
   }
 
-  void _addItemToCart() {
-    if (_inCartItems > 0) {
-      cartController.addItem(_product!, _inCartItems);
-      setState(() {
-        _inCartItems = cartController.getQuantity(
-          _product!,
-        ); // Sync local state
-      });
-      // Get.snackbar(
-      //   'Thông báo',
-      //   'Đã thêm ${_product!.name} vào giỏ hàng',
-      //   backgroundColor: AppColors.mainColor,
-      //   colorText: AppColors.whiteColor,
-      // );
+  int _checkQuantity(int quantity) {
+    if (_inCartItems + quantity < 0) {
+      Get.snackbar(
+        'Lỗi',
+        'Bạn không thể chọn số lượng âm!',
+        backgroundColor: AppColors.mainColor,
+        colorText: AppColors.whiteColor,
+      );
+      if (_inCartItems > 0) {
+        _quantity = -_inCartItems;
+        return _quantity;
+      }
+      return 0;
     } else {
-      Get.snackbar('Lỗi', 'Vui lòng chọn số lượng');
+      return quantity;
+    }
+  }
+
+  void _addItemToCart() {
+    bool exist = cartController.existInCart(_product!);
+    cartController.addItem(_product!, _quantity);
+    setState(() {
+      _quantity = 0;
+      _inCartItems = cartController.getQuantity(_product!);
+    });
+    if (exist) {
+      Get.snackbar(
+        'Thông báo',
+        'Đã cập nhật ${_product!.name} trong giỏ hàng',
+        backgroundColor: Colors.green,
+        colorText: AppColors.whiteColor,
+      );
+    } else {
+      Get.snackbar(
+        'Thông báo',
+        'Đã thêm ${_product!.name} vào giỏ hàng',
+        backgroundColor: Colors.green,
+        colorText: AppColors.whiteColor,
+      );
     }
   }
 
@@ -587,7 +616,7 @@ class _RecommendedFoodDetailState extends State<RecommendedFoodDetail> {
                     int totalItems = controller.totalItems;
                     return GestureDetector(
                       onTap: () {
-                        Get.to(() => CartPage());
+                        Get.toNamed(RouteHelper.getCartPage());
                       },
                       child: Stack(
                         children: [
@@ -702,7 +731,7 @@ class _RecommendedFoodDetailState extends State<RecommendedFoodDetail> {
                     child: Icon(Icons.remove, color: AppColors.signColor),
                   ),
                   SizedBox(width: Dimensions.width10 / 2),
-                  BigText(text: _inCartItems.toString()),
+                  BigText(text: (_inCartItems + _quantity).toString()),
                   SizedBox(width: Dimensions.width10 / 2),
                   GestureDetector(
                     onTap: () => _setQuantity(true),

@@ -6,7 +6,8 @@ class CurrencyFormatter {
     final formatter = NumberFormat.currency(
       locale: 'vi_VN',
       symbol: '₫',
-      decimalDigits: 0, // VND thường không dùng thập phân
+      decimalDigits: 0,
+      customPattern: '#,##0 \u00A4', // Đặt ký hiệu ₫ sau giá
     );
     return formatter.format(amount);
   }

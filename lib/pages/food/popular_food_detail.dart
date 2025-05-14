@@ -6,6 +6,7 @@ import 'package:food_ordering/Utility/dimensions.dart';
 import 'package:food_ordering/controllers/cart_controller.dart';
 import 'package:food_ordering/controllers/popular_product_controller.dart';
 import 'package:food_ordering/pages/cart/cart_page.dart';
+import 'package:food_ordering/routes/route_helper.dart';
 import 'package:food_ordering/widgets/app_column.dart';
 import 'package:food_ordering/widgets/app_icon.dart';
 import 'package:food_ordering/widgets/big_text.dart';
@@ -65,13 +66,21 @@ class PopularFoodDetail extends StatelessWidget {
                   builder: (controller) {
                     return GestureDetector(
                       onTap: () {
-                        // Handle cart button tap
-                        Get..to(() => CartPage());
+                        if (controller.totalItems >= 1) {
+                          Get.toNamed(RouteHelper.getCartPage());
+                        } else {
+                          Get.snackbar(
+                            "Giỏ hàng trống",
+                            "Vui lòng thêm sản phẩm vào giỏ hàng",
+                            backgroundColor: AppColors.mainColor,
+                            colorText: AppColors.whiteColor,
+                          );
+                        }
                       },
                       child: Stack(
                         children: [
                           AppIcon(icon: Icons.shopping_cart_outlined),
-                          Get.find<PopularProductController>().totalItems >= 1
+                          controller.totalItems >= 1
                               ? Positioned(
                                 right: 0,
                                 top: 0,
@@ -191,6 +200,7 @@ class PopularFoodDetail extends StatelessWidget {
                       ),
                       SizedBox(width: Dimensions.width10 / 2),
                       BigText(text: popularProduct.inCartItems.toString()),
+                      // BigText(text: '0'),
                       SizedBox(width: Dimensions.width10 / 2),
                       GestureDetector(
                         onTap: () {

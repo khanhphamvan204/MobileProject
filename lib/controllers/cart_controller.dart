@@ -22,8 +22,10 @@ class CartController extends GetxController {
           img: existingItem.img,
           price: existingItem.price,
           quantity: (existingItem.quantity ?? 0) + quantity,
+          // quantity: (existingItem.quantity != null ? quantity : 0),
           isExist: true,
           time: existingItem.time,
+          product: product,
         );
       });
       if (totalQuantity <= 0) {
@@ -39,16 +41,18 @@ class CartController extends GetxController {
           quantity: quantity,
           isExist: true,
           time: DateTime.now().toString(),
+          product: product,
         );
       });
-    } else {
-      Get.snackbar(
-        "Lỗi",
-        "Vui lòng chọn số lượng lớn hơn 0",
-        backgroundColor: AppColors.mainColor,
-        colorText: AppColors.whiteColor,
-      );
+      // } else {
+      //   Get.snackbar(
+      //     "Lỗi",
+      //     "Vui lòng chọn số lượng lớn hơn 0",
+      //     backgroundColor: AppColors.mainColor,
+      //     colorText: AppColors.whiteColor,
+      //   );
     }
+    update();
 
     // Debug:
     _items.forEach((key, value) {
@@ -86,5 +90,13 @@ class CartController extends GetxController {
 
   List<CartModel> get getItems {
     return _items.entries.map((e) => e.value).toList();
+  }
+
+  int get totalAmount {
+    var total = 0;
+    _items.forEach((key, value) {
+      total += value.price! * value.quantity!;
+    });
+    return total;
   }
 }

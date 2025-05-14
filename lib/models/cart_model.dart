@@ -8,6 +8,7 @@ class CartModel {
   int? quantity;
   bool? isExist;
   String? time;
+  Product? product;
 
   CartModel({
     required this.id,
@@ -17,6 +18,7 @@ class CartModel {
     required this.quantity,
     required this.isExist,
     required this.time,
+    this.product,
   });
 
   // Factory method để chuyển từ JSON sang đối tượng CartModel
@@ -29,6 +31,7 @@ class CartModel {
       quantity: json['quantity'] as int,
       isExist: json['isExist'] as bool,
       time: json['time'] as String,
+      product: Product.fromJson(json['product']),
     );
   }
 

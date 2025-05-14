@@ -131,9 +131,26 @@ class PopularProductController extends GetxController {
   }
 
   void addItem(Product product) {
+    bool exist = _cart.existInCart(product);
+    if (!exist) {
+      Get.snackbar(
+        'Thông báo',
+        'Đã thêm ${product.name} vào giỏ hàng',
+        backgroundColor: Colors.green,
+        colorText: AppColors.whiteColor,
+      );
+    } else {
+      Get.snackbar(
+        'Thông báo',
+        'Đã cập nhật ${product.name} vào giỏ hàng',
+        backgroundColor: Colors.green,
+        colorText: AppColors.whiteColor,
+      );
+    }
     _cart.addItem(product, _quantity);
     _quantity = 0;
     _inCartItems = _cart.getQuantity(product);
+
     // Get.snackbar(
     //   'Thông báo',
     //   'Đã thêm ${product!.name} vào giỏ hàng',

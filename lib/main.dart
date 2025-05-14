@@ -119,8 +119,8 @@ class MyApp extends StatelessWidget {
       themeMode: themeController.themeMode,
 
       // Trang bắt đầu của ứng dụng
-      home: MainFoodPage(),
-      initialRoute: RouteHelper.initial,
+      // home: MainFoodPage(),
+      initialRoute: RouteHelper.getInitial(),
       getPages: RouteHelper.routes, // Hoặc trang nào chứa FoodPageBody của bạn
     );
   }

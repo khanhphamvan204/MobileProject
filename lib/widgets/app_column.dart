@@ -59,6 +59,7 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:food_ordering/Utility/color.dart';
+import 'package:food_ordering/Utility/currency_formatter.dart';
 import 'package:food_ordering/Utility/dimensions.dart';
 import 'package:food_ordering/widgets/big_text.dart';
 import 'package:food_ordering/widgets/icon_and_text_widget.dart';
@@ -84,13 +85,7 @@ class AppColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Định dạng giá với dấu phẩy và ký hiệu ₫ ở cuối
-    final NumberFormat currencyFormat = NumberFormat.currency(
-      locale: 'vi_VN',
-      symbol: '₫',
-      decimalDigits: 0,
-      customPattern: '#,##0 \u00A4', // Đặt ký hiệu ₫ sau giá
-    );
-    final String formattedPrice = currencyFormat.format(price);
+    final String formattedPrice = CurrencyFormatter.formatVND(price);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,11 +109,11 @@ class AppColumn extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Icons.monetization_on, // Icon giá tiền
-                size: Dimensions.font16,
-                color: Color(0xFFC8102E), // Đồng bộ màu đỏ
-              ),
+              // Icon(
+              //   Icons.monetization_on, // Icon giá tiền
+              //   size: Dimensions.font16,
+              //   color: Color(0xFFC8102E), // Đồng bộ màu đỏ
+              // ),
               SizedBox(width: Dimensions.width5),
               Text(
                 formattedPrice,
