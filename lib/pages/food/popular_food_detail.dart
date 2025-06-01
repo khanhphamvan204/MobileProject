@@ -66,16 +66,18 @@ class PopularFoodDetail extends StatelessWidget {
                   builder: (controller) {
                     return GestureDetector(
                       onTap: () {
-                        if (controller.totalItems >= 1) {
-                          Get.toNamed(RouteHelper.getCartPage());
-                        } else {
-                          Get.snackbar(
-                            "Giỏ hàng trống",
-                            "Vui lòng thêm sản phẩm vào giỏ hàng",
-                            backgroundColor: AppColors.mainColor,
-                            colorText: AppColors.whiteColor,
-                          );
-                        }
+                        Get.toNamed(RouteHelper.getCartPage());
+                        // if (controller.totalItems >= 1) {
+                        //   Get.toNamed(RouteHelper.getCartPage());
+                        // }
+                        // else {
+                        //   Get.snackbar(
+                        //     "Giỏ hàng trống",
+                        //     "Vui lòng thêm sản phẩm vào giỏ hàng",
+                        //     backgroundColor: AppColors.mainColor,
+                        //     colorText: AppColors.whiteColor,
+                        //   );
+                        // }
                       },
                       child: Stack(
                         children: [

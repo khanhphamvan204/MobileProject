@@ -9,13 +9,17 @@ import 'package:food_ordering/data/repository/category_repo.dart';
 import 'package:food_ordering/data/repository/popular_product_repo.dart';
 import 'package:food_ordering/data/repository/product_repo.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> init() async {
+  final sharedPreferences = await SharedPreferences.getInstance();
+
+  Get.lazyPut(() => sharedPreferences);
   Get.lazyPut(() => ApiClient(baseUrl: AppConstants.BASE_URL));
   Get.lazyPut(() => PopularProductRepo(apiClient: Get.find()));
   Get.lazyPut(() => ProductRepo(apiClient: Get.find()));
   Get.lazyPut(() => CategoryRepo(apiClient: Get.find()));
-  Get.lazyPut(() => CartRepo(), fenix: true);
+  Get.lazyPut(() => CartRepo(sharedPreferences: Get.find()), fenix: true);
 
   Get.lazyPut(() => PopularProductController(popularProductRepo: Get.find()));
   Get.lazyPut(() => CategoryController(categoryRepo: Get.find()));

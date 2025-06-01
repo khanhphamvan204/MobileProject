@@ -26,11 +26,13 @@
 // }
 // main.dart
 import 'package:flutter/material.dart';
+import 'package:food_ordering/controllers/cart_controller.dart';
 import 'package:food_ordering/controllers/popular_product_controller.dart';
 import 'package:food_ordering/controllers/product_controller.dart';
 import 'package:food_ordering/pages/cart/cart_page.dart';
 import 'package:food_ordering/pages/home/food_page_body.dart';
 import 'package:food_ordering/pages/home/main_food_page.dart'; // Trang chính của bạn
+import 'package:food_ordering/pages/splash/splash_page.dart';
 import 'package:food_ordering/routes/route_helper.dart';
 import 'package:get/get.dart';
 import 'package:food_ordering/controllers/theme_controller.dart'; // Import controller
@@ -56,6 +58,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.find<PopularProductController>().getPopularProductList();
     Get.find<ProductController>().getProductList();
+    Get.find<CartController>().getCartData();
     // GetMaterialApp sẽ tự động lắng nghe thay đổi theme từ Get.changeThemeMode
     return GetMaterialApp(
       title: 'Food Ordering App',
@@ -119,8 +122,8 @@ class MyApp extends StatelessWidget {
       themeMode: themeController.themeMode,
 
       // Trang bắt đầu của ứng dụng
-      // home: MainFoodPage(),
-      initialRoute: RouteHelper.getInitial(),
+      // home: SplashPage(),
+      initialRoute: RouteHelper.getSplashPage(),
       getPages: RouteHelper.routes, // Hoặc trang nào chứa FoodPageBody của bạn
     );
   }

@@ -52,10 +52,12 @@ import 'package:food_ordering/pages/food/popular_food_detail.dart';
 import 'package:food_ordering/pages/food/recommended_food_detail.dart';
 import 'package:food_ordering/pages/home/home_page.dart';
 import 'package:food_ordering/pages/home/main_food_page.dart';
+import 'package:food_ordering/pages/splash/splash_page.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 
 class RouteHelper {
+  static const String splashPage = '/splash-page';
   static const String initial = '/';
   static const String popularFood = '/popular-food';
   static const String food = '/food';
@@ -67,6 +69,7 @@ class RouteHelper {
   static const String resetPassword = '/reset-password';
   static const String orderDetails = '/order-details';
 
+  static String getSplashPage() => '$splashPage';
   static String getInitial() => initial;
   static String getPopularFood(int pageId) => '$popularFood?pageId=$pageId';
   static String getFood(int productId, {Product? arguments}) =>
@@ -74,6 +77,7 @@ class RouteHelper {
   static String getCartPage() => '$cartPage';
 
   static List<GetPage> routes = [
+    GetPage(name: splashPage, page: () => const SplashPage()),
     GetPage(name: initial, page: () => HomePage()),
     GetPage(
       name: popularFood,

@@ -10,6 +10,7 @@ class CartController extends GetxController {
   CartController({required this.cartRepo});
   Map<int, CartModel> _items = {};
   Map<int, CartModel> get items => _items;
+  List<CartModel> storageItems = [];
 
   void addItem(Product product, int quantity) {
     var totalQuantity = 0;
@@ -52,6 +53,7 @@ class CartController extends GetxController {
       //     colorText: AppColors.whiteColor,
       //   );
     }
+    cartRepo.addToCartList(getItems);
     update();
 
     // Debug:
@@ -98,5 +100,43 @@ class CartController extends GetxController {
       total += value.price! * value.quantity!;
     });
     return total;
+  }
+
+  set setCart(List<CartModel> items) {
+    storageItems = items;
+    print("Length of storageItems: ${storageItems.length}");
+    for (var i = 0; i < storageItems.length; i++) {
+      _items.putIfAbsent(storageItems[i].product!.id, () => storageItems[i]);
+    }
+  }
+
+  List<CartModel> getCartData() {
+    setCart = cartRepo.getCartList();
+    return storageItems;
+  }
+
+  void addToCartHistory() {
+    cartRepo.addToCartHistoryList();
+    clear();
+  }
+
+  void clear() {
+    _items = {};
+    update();
+  }
+
+  List<CartModel> getCartHistoryList() {
+    return cartRepo.getCartHistoryList();
+  }
+
+  set setItems(Map<int, CartModel> newItems) {
+    _items = {};
+    _items = newItems;
+    update();
+  }
+
+  void addToCartList() {
+    cartRepo.addToCartList(getItems);
+    update();
   }
 }

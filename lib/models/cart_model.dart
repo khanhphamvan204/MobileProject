@@ -22,20 +22,18 @@ class CartModel {
   });
 
   // Factory method để chuyển từ JSON sang đối tượng CartModel
-  factory CartModel.fromJson(Map<String, dynamic> json) {
-    return CartModel(
-      id: json['id'] as int,
-      img: json['img'] as String,
-      name: json['name'] as String,
-      price: json['price'] as int,
-      quantity: json['quantity'] as int,
-      isExist: json['isExist'] as bool,
-      time: json['time'] as String,
-      product: Product.fromJson(json['product']),
-    );
+  CartModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'] as int?;
+    img = json['img'] as String?;
+    name = json['name'] as String?;
+    price = json['price'] as int?;
+    quantity = json['quantity'] as int?;
+    isExist = json['isExist'] as bool?;
+    time = json['time'] as String?;
+    product =
+        json['product'] != null ? Product.fromJson(json['product']) : null;
   }
 
-  // Chuyển đối tượng CartModel thành JSON (nếu cần)
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -45,6 +43,7 @@ class CartModel {
       'quantity': quantity,
       'isExist': isExist,
       'time': time,
+      'product': product?.toJson(),
     };
   }
 }
