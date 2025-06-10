@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_ordering/Utility/color.dart';
+import 'package:food_ordering/pages/account/account_page.dart';
+import 'package:food_ordering/pages/auth/sign_in_page.dart';
+import 'package:food_ordering/pages/auth/sign_up_page.dart';
 import 'package:food_ordering/pages/cart/cart_history.dart';
 import 'package:food_ordering/pages/cart/cart_page.dart';
 import 'package:food_ordering/pages/home/main_food_page.dart';
@@ -21,14 +24,13 @@ class _HomePageState extends State<HomePage>
   // List of pages
   final List<Widget> _pages = [
     const MainFoodPage(),
-    const CartPage(),
-    const Center(
-      child: Text("Đơn hàng đã mua", style: TextStyle(fontSize: 20)),
-    ),
-    // const CartHistory(),
-    const Center(
-      child: Text("Thông tin tài khoản", style: TextStyle(fontSize: 20)),
-    ),
+    SignInPage(),
+    // const CartPage(),
+    // const Center(
+    //   child: Text("Đơn hàng đã mua", style: TextStyle(fontSize: 20)),
+    // ),
+    const CartHistory(),
+    AccountPage(),
   ];
 
   @override

@@ -29,22 +29,32 @@ import 'package:flutter/material.dart';
 import 'package:food_ordering/controllers/cart_controller.dart';
 import 'package:food_ordering/controllers/popular_product_controller.dart';
 import 'package:food_ordering/controllers/product_controller.dart';
+import 'package:food_ordering/pages/auth/sign_in_page.dart';
+import 'package:food_ordering/pages/auth/sign_up_page.dart';
 import 'package:food_ordering/pages/cart/cart_page.dart';
 import 'package:food_ordering/pages/home/food_page_body.dart';
+import 'package:food_ordering/pages/home/home_page.dart';
 import 'package:food_ordering/pages/home/main_food_page.dart'; // Trang chính của bạn
 import 'package:food_ordering/pages/splash/splash_page.dart';
 import 'package:food_ordering/routes/route_helper.dart';
 import 'package:get/get.dart';
 import 'package:food_ordering/controllers/theme_controller.dart'; // Import controller
 import 'package:food_ordering/helper/dependencies.dart' as dep;
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
+  Future<void> clearAllPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
+
   // Đảm bảo Flutter binding đã sẵn sàng trước khi chạy bất cứ thứ gì async
   WidgetsFlutterBinding.ensureInitialized();
   await dep.init();
   // Khởi tạo ThemeController sử dụng Get.put()
   // await Get.putAsync(() async => ThemeController()); // Nếu cần khởi tạo bất đồng bộ
   Get.put(ThemeController()); // Khởi tạo đồng bộ
+  // clearAllPreferences();
   runApp(MyApp());
 }
 
@@ -122,9 +132,9 @@ class MyApp extends StatelessWidget {
       themeMode: themeController.themeMode,
 
       // Trang bắt đầu của ứng dụng
-      // home: SplashPage(),
+      // home: HomePage(),
       initialRoute: RouteHelper.getSplashPage(),
-      getPages: RouteHelper.routes, // Hoặc trang nào chứa FoodPageBody của bạn
+      getPages: RouteHelper.routes,
     );
   }
 }
